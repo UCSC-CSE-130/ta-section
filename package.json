@@ -1,0 +1,32 @@
+{
+  "name": "sp23-ta-section",
+  "version": "1.0.0",
+  "description": "This repository contains slides and other materials that the TAs cover at sections.",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "run-s build:html build:pdf build:index",
+    "build:html": "marp",
+    "build:pdf": "marp --pdf",
+    "build:index": "node index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UCSC-CSE-130/sp23-ta-section.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UCSC-CSE-130/sp23-ta-section/issues"
+  },
+  "homepage": "https://github.com/UCSC-CSE-130/sp23-ta-section#readme",
+  "devDependencies": {
+    "@marp-team/marp-cli": "^2.5.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^5.0.0"
+  },
+  "marp": {
+    "inputDir": "./slides",
+    "output": "./public"
+  }
+}

@@ -1,3 +1,3 @@
-# TA SECTION
+# CSE 130 TA SECTION
 
 This repository contains slides and other materials that the TAs cover at sections.

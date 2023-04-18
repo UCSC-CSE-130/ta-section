@@ -29,7 +29,7 @@ Spring 2023
 
 # Programming Model
 
-Users provide two function: `map` and `reduce`
+Users provide two functions: `map` and `reduce`
 
 > Map takes an input pair and produces a set of intermediate key/value pairs. The MapReduce library groups together all intermediate values associated with the same intermediate key I and passes them to the Reduce function.
 
@@ -217,7 +217,7 @@ while(true) {
     // `kvlist_iterator_next` returns `NULL` at the end of list
     break;
   }
-  printf("key = %s, value = %s\n");
+  printf("key = %s, value = %s\n", pair->key, pair->value);
 }
 // cleanup
 kvlist_iterator_free(&itor);
@@ -248,10 +248,6 @@ There are five phases in map_reduce as follows:
 
 ---
 
-![structure](https://user-images.githubusercontent.com/10496155/232634729-3ae716d0-17b3-43b0-8af9-310d244e3e36.png)
-
----
-
 # Split Phase
 
 In the split phase (also called the partition phase), you split the input list into `num_mapper` smaller lists so that each smaller list can be processed by different threads independently.
@@ -266,7 +262,7 @@ In the map phase, you create `num_mapper` threads. Each thread is responsible fo
 
 # Shuffle Phase
 
-In the shuffle phase, you create `num_reducer` independent lists that can be processed in the next phase. Since you need to provide all pairs with the same key to the `reducer` function, the same key must be assigned to the same list. For example, if you have two pairs with the same key, those two pairs must be assigned to the same list so that they can be passed to `reducer` together.
+In the shuffle phase, you create `num_reducer` independent lists that can be processed in the next phase. Since you need to provide all pairs with the same key to the `reducer` function, the same key must be assigned to the same list.
 
 ---
 
@@ -281,6 +277,10 @@ When calling `reducer`, you need to construct a list of all pairs with the same 
 # Output
 
 You need to store the results in the `output` list passed as an argument. Use `kvlist_extend` to move pairs to `output`.
+
+---
+
+![structure](https://user-images.githubusercontent.com/10496155/232634729-3ae716d0-17b3-43b0-8af9-310d244e3e36.png)
 
 ---
 
@@ -346,8 +346,9 @@ https://replit.com/@shumbo/cse-130-pthread-demo
 #include <stdio.h>
 #include <pthread.h>
 
-void thread_fn(void* arg) {
+void* thread_fn(void* arg) {
   printf("hello from sub thread\n");
+  return NULL;
 }
 
 int main(int argc, char** argv) {
@@ -368,9 +369,10 @@ https://replit.com/@shumbo/cse-130-pthread-args
 #include <stdio.h>
 #include <pthread.h>
 
-void thread_fn(void* arg) {
+void* thread_fn(void* arg) {
   int num = *(int*)arg;
   printf("subthread received %d\n", num);
+  return NULL;
 }
 
 int main(int argc, char** argv) {
@@ -394,11 +396,12 @@ https://replit.com/@shumbo/cse-130-race
 
 volatile int x;
 
-void increment_x(void* arg) {
+void* increment_x(void* arg) {
   int num = *(int*)arg;
   for(int i = 0; i < num; i++) {
     x += 1;
   }
+  return NULL;
 }
 
 int main(int argc, char** argv) {
@@ -425,13 +428,14 @@ https://replit.com/@shumbo/cse-130-mutex
 volatile int x;
 pthread_mutex_t mutex;
 
-void increment_x(void* arg) {
+void* increment_x(void* arg) {
   int num = *(int*)arg;
   for(int i = 0; i < num; i++) {
     pthread_mutex_lock(&mutex);
     x += 1;
     pthread_mutex_unlock(&mutex);
   }
+  return NULL;
 }
 
 int main(int argc, char** argv) {

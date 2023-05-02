@@ -65,9 +65,9 @@ Why? After all, the machine has only one set of registers.
 
 ---
 
-# 18
+# 27
 
-What is the biggest advantage of implementing threads in user space? What is the biggest disadvantage?
+In a system with threads, is there one stack per thread or one stack per process when user-level threads are used? What about when kernel-level threads are used? Explain.
 
 ---
 
@@ -91,16 +91,6 @@ For 1, assume that the system is multiprogrammed, and that each job gets its fai
 ---
 
 # Chapter 3: Deadlocks
-
----
-
-# 15
-
-Explain how the system can recover from the deadlock in previous problem using
-
-- recovery through preemption
-- recovery through rollback
-- recovery through killing processes
 
 ---
 

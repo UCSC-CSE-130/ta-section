@@ -8,7 +8,8 @@
     "build": "run-s build:html build:pdf build:index",
     "build:html": "marp",
     "build:pdf": "marp --pdf --allow-local-files",
-    "build:index": "node index.mjs"
+    "build:index": "node index.mjs",
+    "dev": "marp -s"
   },
   "repository": {
     "type": "git",

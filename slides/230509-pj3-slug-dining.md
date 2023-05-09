@@ -214,7 +214,7 @@ void renter() {
 void landlord() {
   pthread_mutex_lock(&m);
   while(!(balance >= 1200)) {
-    pthread_cond_wait(&c); // unlock -> wait for signal -> lock
+    pthread_cond_wait(&c, &m); // unlock -> wait for signal -> lock
   }
   balance -= 1200;
   pthread_mutex_unlock(&m);
@@ -250,5 +250,5 @@ sem_wait(&sem); // -> 0
 sem_wait(&sem); // -> -1? block
 
 // on a different thread
-sem_signal(&sem); // unblock ↑
+sem_post(&sem); // unblock ↑
 ```

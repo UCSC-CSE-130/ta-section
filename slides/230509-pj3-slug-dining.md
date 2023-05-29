@@ -223,6 +223,44 @@ void landlord() {
 
 ---
 
+# Condition Variable (Broadcast)
+
+`pthread_cond_signal` sends a signal to one thread. But it is possible that, because of the change the thread made, more than one thread can unblock. Use `pthread_cond_broadcast` to send signals to all the threads waiting on the condition variable.
+
+```c
+int balance = 0;
+mutex_t m;
+pthread_cond_t c;
+
+void renter() {
+  int salary = work_hard();
+  pthread_mutex_lock(&m);
+  balance += salary;
+  pthread_mutex_unlock(&m);
+  pthread_cond_broadcast(&c); // notify both landlord and IRS
+}
+
+void landlord() {
+  pthread_mutex_lock(&m);
+  while(!(balance >= 1200)) {
+    pthread_cond_wait(&c, &m);
+  }
+  balance -= 1200;
+  pthread_mutex_unlock(&m);
+}
+
+void irs() {
+  pthread_mutex_lock(&m);
+  while(!(balance >= 500)) {
+    pthread_cond_wait(&c, &m);
+  }
+  balance -= 500;
+  pthread_mutex_unlock(&m);
+}
+```
+
+---
+
 # Semaphore
 
 ![bg right 60%](./230509-pj3-slug-dining/semaphore.jpg)
